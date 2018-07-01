@@ -64,4 +64,4 @@ if __name__ == "__main__":
                 output_file.write(create_line(remained_tracks, playlist["name"], track, 1) + "\n")
             for track in random_tracks:
                 if track not in tracks:
-                    output_file.write(create_line(remained_tracks, playlist["name"], track, 0) + "\n")
+                    output_file.write(create_line(remained_tracks, playlist["name"], track, -1) + "\n")

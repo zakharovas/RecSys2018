@@ -115,7 +115,7 @@ train_als() {
 
 
 train_starspace() {
-    # $STARSPACE train -trainFile $LIST_FILE -model $STARSPACE_MODEL -trainMode 1 -dim 128 -verbose 1 -thread 32   -lr 0.01 -epoch 20 -maxNegSamples 100 -negSearchLimit 100 -label 'l'
+    $STARSPACE train -trainFile $LIST_FILE -model $STARSPACE_MODEL -trainMode 1 -dim 128 -verbose 1 -thread 32   -lr 0.01 -epoch 20 -maxNegSamples 100 -negSearchLimit 100 -label 'l'
     TMP_FILE=$DATA_DIR/${1}_tmp
     python -m utils.extract_starspace_vector $STARSPACE_MODEL.tsv $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $1 $2 1
     python -m utils.vectors_to_track_vectors $2 $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $1 $TMP_FILE
@@ -124,26 +124,6 @@ train_starspace() {
     echo -e "$1_starspace $2" >> $VECTOR_FILE
 }
 
-train_name_model() {
-    NAME_FILE=${DATA_DIR}/names_with_ids
-    NAME_MODEL=${DATA_DIR}/name_model
-    TRACK_NAMES_FILE=${DATA_DIR}/track_names
-    python -m utils.extract_names $UNITED_TRAIN $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $TRACK_INFO $ALBUM_INFO $ARTIST_INFO $NAME_FILE 1
-    $STARSPACE train -trainFile $NAME_FILE -model $NAME_MODEL -trainMode 0 -dim 256 -verbose 1 -thread 32 -fileFormat labelDoc -ngrams 3 -epoch 20
-    echo NAME MODEL TRAINED
-    python -m utils.create_description_for_tracks $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $TRACK_INFO $ALBUM_INFO $ARTIST_INFO $TRACK_NAMES_FILE
-    TRACK_VECTORS=${DATA_DIR}/track_vectors.pickle
-    python -m utils.extract_track_vectors $TRACK_NAMES_FILE ${NAME_MODEL}.tsv $TRACK_VECTORS
-    STARSPACE_DIR=$(dirname "${STARSPACE}")
-    TMP_FILE=${DATA_DIR}/tmp
-    python -m utils.extract_names $UNITED_TRAIN $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $TRACK_INFO $ALBUM_INFO $ARTIST_INFO $NAME_FILE 0
-    ${STARSPACE_DIR}/embed_doc $NAME_MODEL $NAME_FILE > $TMP_FILE
-    PLAYLIST_EMBEDDINGS=${DATA_DIR}/playlist_embeddings
-    tail -n +4 $TMP_FILE | awk 'NR%2-1' > ${TMP_FILE}_2
-    python -m utils.extract_starspace_vector ${TMP_FILE}_2 $TRACK_TO_ALBUM $ALBUM_TO_ARTIST track $PLAYLIST_EMBEDDINGS 0
-    rm $TMP_FILE
-    rm ${TMP_FILE}_2
-}
 
 create_vectors() {
     LIST_FILE=$DATA_DIR/${1}_list
@@ -275,25 +255,6 @@ show_metrics() {
 
 }
 
-unite_train() {
-    UNITED_TRAIN=${DATA_DIR}/united_train.json
-    if [[ $1 -eq 0 ]]; then
-        cp $VECTOR_TRAIN $UNITED_TRAIN
-        cat $EXAMPLES >> $UNITED_TRAIN
-    else 
-        cp $TRAIN $UNITED_TRAIN
-    fi
-    if [[ $DIR_TEST -eq 1 ]]; then
-        for TEST_FILE in $TEST/test_?
-        do
-            echo $TEST_FILE
-            cat $TEST_FILE >> $UNITED_TRAIN
-        done
-    else 
-        cat $TEST >> $UNITED_TRAIN
-    fi
-}
-
 STAMP=$(date  "+_%Y_%m_%d_%H_%M_%S")
 ENCODING=0
 UPDATE=0
@@ -392,6 +353,7 @@ fi
 
 if [[ $UPDATE_EXAMPLES -eq 1 ]]; then
     create_examples
+    exit
 fi
 
 POPULARITY_ARTIST=$DATA_DIR/artist.pop
@@ -403,7 +365,6 @@ CATBOOST_MODEL=${DATA_DIR}/cb_model.bin
 if [[ $UPDATE_CATBOOST -eq 1 ]]; then
     CATBOOST_EXAMPLES=${DATA_DIR}/catboost.train
     CATBOOST_TEST=${DATA_DIR}/catboost.test
-    create_train
     fit_catboost
     exit
 fi

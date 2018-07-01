@@ -6,7 +6,7 @@ We used Python3.5
 
 Install requirements from requirements.txt
 
-You will also need [Catboost](https://catboost.yandex/) and [Starspace](https://github.com/facebookresearch/StarSpace)
+You will also need [Catboost](https://catboost.yandex/), [Starspace](https://github.com/facebookresearch/StarSpace) and [Python Transformer](https://github.com/mroizner/pyt)
 
 ### Creating solution
 
@@ -22,13 +22,13 @@ You will also need [Catboost](https://catboost.yandex/) and [Starspace](https://
     ```
 1) Train iAls and Starspace
     ```bash
-    bash recsys_script.sh  --encoding 
+    bash recsys_script.sh  --update_models 
     ```
 
-
-
 1) Train Vowpal Wabbit 
-
+    ```bash
+    bash train_vw.sh
+    ```
 
 1) Train name iAls
 
