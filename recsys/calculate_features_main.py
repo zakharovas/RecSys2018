@@ -47,7 +47,7 @@ if __name__ == '__main__':
     with_name = int(sys.argv[11])
     # skip = int(sys.argv[8])
     # lines_to_do = int(sys.argv[9])
-    svdpp_folder = "/home/alzaharov/name_vectors/stash"
+    svdpp_folder = "/home/alzaharov/name_vectors/svd_pp"
     nals_folder = "/home/alzaharov/name_vectors"
     track_to_album = np.array(utils.load_info_for_model.load_json(track_to_album))
     album_to_artist = np.array(utils.load_info_for_model.load_json(album_to_artist))
