@@ -45,10 +45,9 @@ if __name__ == '__main__':
     output_filename = sys.argv[9]
     number_of_threads = int(sys.argv[10])
     with_name = int(sys.argv[11])
-    # skip = int(sys.argv[8])
-    # lines_to_do = int(sys.argv[9])
-    svdpp_folder = "/home/alzaharov/name_vectors/svd_pp"
+    svdpp_folder = sys.argv[12]
     nals_folder = "/home/alzaharov/name_vectors"
+    nals_folder = sys.argv[13]
     track_to_album = np.array(utils.load_info_for_model.load_json(track_to_album))
     album_to_artist = np.array(utils.load_info_for_model.load_json(album_to_artist))
 
@@ -65,8 +64,6 @@ if __name__ == '__main__':
     vector_models.append(m)
     ui_models.append(uim)
 
-    # ui_models = utils.load_vector_models.load_user_item_models_from_file(ui_vector_model_description, NumpyItemVectorModel)
-    # done = 0
     playlists = []
     with open(playlists_fielname, 'r') as input_file:
         playlists = [json.loads(x) for x in input_file]

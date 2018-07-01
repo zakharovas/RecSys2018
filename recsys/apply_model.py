@@ -78,8 +78,8 @@ if __name__ == '__main__':
     catboost_model_file = sys.argv[10]
     output_filename = sys.argv[11]
 
-    svdpp_folder = "/home/alzaharov/name_vectors/svd_pp"
-    nals_folder = "/home/alzaharov/name_vectors"
+    svdpp_folder = sys.argv[12]
+    nals_folder = sys.argv[13]
 
 
     # skip = int(sys.argv[8])

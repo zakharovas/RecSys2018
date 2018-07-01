@@ -202,7 +202,7 @@ apply_model() {
         I=0
         for TEST_FILE in $TEST/test_?
         do
-            python -m apply_model ${TEST_FILE}_u $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $VECTOR_FILE $UI_VECTOR_FILE $POPULARITY_TRACK $POPULARITY_ALBUM $POPULARITY_ARTIST ${TEST_FILE}_candidates $CATBOOST_MODEL ${TEST_FILE}_predictions
+            python -m apply_model ${TEST_FILE}_u $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $VECTOR_FILE $UI_VECTOR_FILE $POPULARITY_TRACK $POPULARITY_ALBUM $POPULARITY_ARTIST ${TEST_FILE}_candidates $CATBOOST_MODEL ${TEST_FILE}_predictions ../splitted_data/svd_pp ../splitted_data/nals
             I=$((I + 1))
             if [[ $I -eq 1 ]]; then
                 I=0

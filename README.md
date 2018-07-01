@@ -36,7 +36,6 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     bash train_vw.sh
     ```
 
-
 1) Create examples files for Catboost
     ```bash
     bash create_examples.sh
@@ -45,6 +44,9 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 1) Create pools for catboost from examples
     
     ```bash
+    bash test_to_vw.sh
+    bash vw_predict_train2.sh
+    bash add_vw_t2.sh
     bash feature.sh
     ```
 
@@ -55,17 +57,18 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 
 1) Create candidates for challenge set
     ```bash
-    bash recsys_script.sh  --update_candidates 
+    bash recsys_script.sh  --update_candidates --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
     ```
 
 1) Predict with Vowpal Wabbit model
     ```bash
-    bash wv_on_unk_test.sh  ../splitted_data 
+    bash wv_on_unk_test.sh  ../splitted_data
+    bash add_vw.sh ../splitted_data
     ```
 
 1) Apply trained models
     ```bash
-    bash recsys_script.sh  --apply 
+    bash recsys_script.sh  --apply --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
     ```
 
 1) Decode created solution
