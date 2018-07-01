@@ -29,11 +29,11 @@ predict_wv() {
             art_c = pl_art.count(art)
             alb_c = pl_alb.count(alb)
             tr_c = pl_tr.count(tr)
-            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" ../splitted_data/rwv_${1} > ../splitted_data/rwv_${1}_u
-    vw -d ../splitted_data/rwv_${1}_u -i ../splitted_data/wv_model -t -p ../splitted_data/wv_${1}
+            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" ${1}_wv > ${1}_wv_2
+    vw -d ${1}_wv_2 -i ../splitted_data/wv_model -t -p ${1}_wv_f
 }
 
-for NAME in name_1 name_5 name_10 no_name_100  no_name_5 no_name_10 no_name_25
+for TEST_FILE in $1/test_?
 do
-    predict_wv $NAME
+    predict_wv TEST_FILE
 done

@@ -4,7 +4,7 @@ python -m utils.dataset_for_vw ../splitted_data/vector_train.json \
                                   ../splitted_data/track_to_album.json \
                                   ../splitted_data/albums_to_artist.json \
                                   ../splitted_data/nals/encoding.json \
-                                  ../splitted_data/wv_train \
+                                  ../splitted_data/wv_train
     pyt "tokens = _.split()
            pl_art = []
             pl_alb = []

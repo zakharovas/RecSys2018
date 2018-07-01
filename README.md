@@ -18,11 +18,11 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
  
 1) Encode million playlist dataset and challenge set
     ```bash
-    bash recsys_script.sh  --encoding 
+    bash recsys_script.sh --encoding 
     ```
 1) Train iAls and Starspace
     ```bash
-    bash recsys_script.sh  --update_models 
+    bash recsys_script.sh --update_models 
     ```
 1) Train name iAls
     ```bash
@@ -57,18 +57,19 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 
 1) Create candidates for challenge set
     ```bash
-    bash recsys_script.sh  --update_candidates --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
+    bash recsys_script.sh --update_candidates --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
     ```
 
 1) Predict with Vowpal Wabbit model
     ```bash
     bash wv_on_unk_test.sh  ../splitted_data
+    bash vw_predict.sh  ../splitted_data
     bash add_vw.sh ../splitted_data
     ```
 
 1) Apply trained models
     ```bash
-    bash recsys_script.sh  --apply --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
+    bash recsys_script.sh --apply --train ../splitted_data/encoded_train.json --test ../splitted_data --test_dir
     ```
 
 1) Decode created solution
