@@ -1,14 +1,14 @@
 # RecSys2018
 MIPT_MSU team RecSys Challenge 2018 solution
 
-###Requirements
+### Requirements
 We used Python3.5
 
 Install requirements from requirements.txt
 
 You will also need [Catboost](https://catboost.yandex/) and [Starspace](https://github.com/facebookresearch/StarSpace)
 
-###Creating solution
+### Creating solution
  
 1) Encode million playlist dataset and challenge set. 
 
