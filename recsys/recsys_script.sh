@@ -54,34 +54,29 @@ try_encode() {
     ALBUM_INFO=$DATA_DIR/album_names.json
     ARTIST_INFO=$DATA_DIR/artist_names.json
     
-    if [[ $ENCODING  -eq 1 ]]; then
-        echo "ENCODING"
-        ALBUM_TO_ARTIST="$DATA_DIR/albums_to_artist.json"
-        TRACK_TO_ALBUM="$DATA_DIR/track_to_album.json"
-        echo ENCODING IDS
-        python -m utils.encode_id $ALL $ARTIST $ALBUMS $TRACKS $ALBUM_TO_ARTIST $TRACK_TO_ALBUM
-        echo "ENCODING DICTIONARIES CREATED"
-        ENCODED_TRAIN="$DATA_DIR/encoded_train.json"
-        ENCODED_TEST="$DATA_DIR/encoded_test.json"
-        echo "EXTRACTING NAMES"
-        create_info
-        echo "NAMES EXTRACTED"
-        archive_file $ENCODED_TRAIN
-        archive_file $ENCODED_TEST
-        echo "ENCODING TRAIN"
-        python -m utils.encode_playlists $TRAIN $TRACKS $ENCODED_TRAIN &
-        echo "ENCODING TEST"
-        python -m utils.encode_playlists $TEST $TRACKS $ENCODED_TEST &
-        wait
-        TRAIN=$ENCODED_TRAIN
-        TEST=$ENCODED_TEST
-        echo "ENCODIND COMPLETE"
-    else
-        ALBUM_TO_ARTIST="$DATA_DIR/albums_to_artist.json"
-        TRACK_TO_ALBUM="$DATA_DIR/track_to_album.json"
+    echo "ENCODING"
+    ALBUM_TO_ARTIST="$DATA_DIR/albums_to_artist.json"
+    TRACK_TO_ALBUM="$DATA_DIR/track_to_album.json"
+    echo ENCODING IDS
+    python -m utils.encode_id $ALL $ARTIST $ALBUMS $TRACKS $ALBUM_TO_ARTIST $TRACK_TO_ALBUM
+    echo "ENCODING DICTIONARIES CREATED"
+    ENCODED_TRAIN="$DATA_DIR/encoded_train.json"
+    ENCODED_TEST="$DATA_DIR/encoded_test.json"
+    echo "EXTRACTING NAMES"
+    create_info
+    echo "NAMES EXTRACTED"
+    archive_file $ENCODED_TRAIN
+    archive_file $ENCODED_TEST
+    echo "ENCODING TRAIN"
+    python -m utils.encode_playlists $TRAIN $TRACKS $ENCODED_TRAIN &
+    echo "ENCODING TEST"
+    python -m utils.encode_playlists $TEST $TRACKS $ENCODED_TEST &
+    python -m utils.encode_playlists "${DATA_DIR}/challenge_set.json" $TRACKS "${DATA_DIR}/test_c" &
+    wait
+    TRAIN=$ENCODED_TRAIN
+    TEST=$ENCODED_TEST
+    echo "ENCODIND COMPLETE"
 
-        echo "SKIP ENCODING"
-    fi
 }
 
 create_popularity() {
@@ -306,6 +301,7 @@ UPDATE_VECTORS=0
 UPDATE_CATBOOST=0
 UPDATE_CANDIDATES=0
 
+DATA_DIR="../splitted_data"
 TRAIN="$DATA_DIR/train.json"
 TEST="$DATA_DIR/test.json"
 ALL="$DATA_DIR/all.json"
@@ -354,8 +350,6 @@ do
     shift
 done
 
-DATA_DIR=~/spotify/${PREFIX}_data
-
 if [[ $SET_VIRTUALENV -eq 1 ]]; then
     source $VIRTUALENV_PATH
 fi
@@ -370,20 +364,32 @@ CREATE_DICT=utils/encode_id.py
 TRACKS=("$DATA_DIR/tracks.json")
 ALBUMS=("$DATA_DIR/albums.json")
 ARTIST=("$DATA_DIR/atrist.json")
-TMP_TRAIN="$DATA_DIR/shuffed_train.json"
-shuf $TRAIN > $TMP_TRAIN
-try_encode
+ALBUM_TO_ARTIST="$DATA_DIR/albums_to_artist.json"
+TRACK_TO_ALBUM="$DATA_DIR/track_to_album.json"
+
+if [[ ${ENCODING} -eq 1 ]]; then
+    try_encode
+    exit
+fi
+
 VECTOR_FILE=$DATA_DIR/info_about_vector.tsv
 UI_VECTOR_FILE=$DATA_DIR/info_about_ui_vector.tsv
-
 VECTOR_TRAIN="$DATA_DIR/vector_train.json"
 CATBOOST_TRAIN="$DATA_DIR/cb_train.json"
 EXAMPLES=${DATA_DIR}/tmp_examples.json
 
 export OPENBLAS_NUM_THREADS=1
 
-head -n 900000 $TMP_TRAIN > $VECTOR_TRAIN
-tail -n 90000 $TMP_TRAIN > $CATBOOST_TRAIN
+if [[ $UPDATE_VECTORS -eq 1 ]]; then
+
+    TMP_TRAIN="$DATA_DIR/shuffled_train.json"
+    shuf $TRAIN > $TMP_TRAIN
+    head -n 900000 $TMP_TRAIN > $VECTOR_TRAIN
+    tail -n 90000 $TMP_TRAIN > $CATBOOST_TRAIN
+    new_vectors
+    exit
+fi
+
 if [[ $UPDATE_EXAMPLES -eq 1 ]]; then
     create_examples
 fi
@@ -398,9 +404,8 @@ if [[ $UPDATE_CATBOOST -eq 1 ]]; then
     CATBOOST_EXAMPLES=${DATA_DIR}/catboost.train
     CATBOOST_TEST=${DATA_DIR}/catboost.test
     create_train
-#     exit
-#    telegram-send "TRAIN CREATED"
-#    fit_catboost
+    fit_catboost
+    exit
 fi
 
 CANDIDATE_FILE=${DATA_DIR}/test_candidates.pickle
@@ -409,11 +414,14 @@ if [[ $UPDATE_CANDIDATES -eq 1 ]]; then
 #    archive_file $CANDIDATE_FILE
 
     calculate_candidates
+    exit
 fi
+
 FINAL_RESULTS=final_tesults.table
 PREDICTIONS=${DATA_DIR}/preditions.json
 if [[ $APPLY -eq 1 ]]; then
     apply_model
+    exit
 fi
-archive_file $FINAL_RESULTS
-show_metrics
+#archive_file $FINAL_RESULTS
+#show_metrics
