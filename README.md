@@ -24,20 +24,28 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     ```bash
     bash recsys_script.sh  --update_models 
     ```
+1) Train name iAls
+    ```bash
+    bash train_nals.sh 
+    ```
+
+1) Train SVD++
 
 1) Train Vowpal Wabbit 
     ```bash
     bash train_vw.sh
     ```
 
-1) Train name iAls
 
 1) Create examples files for Catboost
+    ```bash
+    bash create_examples.sh
+    ```
 
 1) Create pools for catboost from examples
     
     ```bash
-    feature.sh
+    bash feature.sh
     ```
 
 1) Train Catboost
@@ -68,13 +76,17 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     ```
  
 
-With recsys_script.sh you may set path to catboost binary with --catboost_path option.
+### Usage recommendations
+
+* With recsys_script.sh you may set path to catboost binary with --catboost_path option.
 To Starspace binary with --starspace_path option. To your python virtualenv with --env option.
 
 
-You will need about 100GB RAM
+* You will need about 100GB RAM
 
-We recommend you to train Catboost on GPU, beause it takes several hours instead of days.
+* Most of our programs creates 32 threads
+
+* We recommend you to train Catboost on GPU, beause it takes several hours instead of days.
 
  
 
