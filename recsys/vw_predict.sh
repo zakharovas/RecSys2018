@@ -29,7 +29,7 @@ predict_wv() {
             art_c = pl_art.count(art)
             alb_c = pl_alb.count(alb)
             tr_c = pl_tr.count(tr)
-            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" ${1}_wv > ${1}_wv_2
+            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" --input ${1}_wv --output ${1}_wv_2
     vw -d ${1}_wv_2 -i ../splitted_data/wv_model -t -p ${1}_wv_f
 }
 

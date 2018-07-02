@@ -33,5 +33,5 @@ python -m utils.dataset_for_vw ../splitted_data/vector_train.json \
             art_c = pl_art.count(art)
             alb_c = pl_alb.count(alb)
             tr_c = pl_tr.count(tr)
-            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" ../splitted_data/wv_train > ../splitted_data/wv_train_1
+            output(_ + ' |hCounts artist:%d album:%d track:%d artist_%d album_%d track_%d' % (art_c, alb_c, tr_c, art_c, alb_c, tr_c))" --input ../splitted_data/wv_train --output ../splitted_data/wv_train_1
     vw -d ../splitted_data/wv_train_1 -f ../splitted_data/wv_model -c  --loss_function logistic -b 24 --l2 0.1 -l 0.02 --passes 100 --bfgs -q ad -q be -q cf -q gd -q ge -q gf

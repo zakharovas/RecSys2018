@@ -6,7 +6,7 @@ We used Python3.5
 
 Install requirements from requirements.txt
 
-You will also need [Catboost](https://catboost.yandex/), [Starspace](https://github.com/facebookresearch/StarSpace) and [Python Transformer](https://github.com/mroizner/pyt)
+You will also need [Catboost](https://catboost.yandex/), [Starspace](https://github.com/facebookresearch/StarSpace), [Vowpal Wabbit](https://github.com/JohnLangford/vowpal_wabbit) and [Python Transformer](https://github.com/mroizner/pyt)
 
 ### Creating solution
 
