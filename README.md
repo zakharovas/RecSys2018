@@ -12,6 +12,8 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 
 **All scripts are started from RecSys2018/recsys**
 
+**For all scripts except *recsys_script.sh* you should activate virtualenv externaly in your bash session**
+
 1) In RecSys2018 folder create splitted_data folder and put million playlist dataset there (RecSys2018/splitted_data/raw)
 
 2) Put challenge set into splitted_data folder (RecSys2018/splitted_data/challenge_set.json)
@@ -24,19 +26,22 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     ```bash
     bash recsys_script.sh --update_models 
     ```
-1) Train name iAls
+1) Train name iALS
     ```bash
     bash train_nals.sh 
     ```
 
 1) Train SVD++
+    ```bash
+    bash train_svd_pp.sh
+    ```
 
 1) Train Vowpal Wabbit 
     ```bash
     bash train_vw.sh
     ```
 
-1) Create examples files for Catboost
+1) Create example files for Catboost
     ```bash
     bash create_examples.sh
     ```
