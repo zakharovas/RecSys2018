@@ -171,18 +171,6 @@ create_examples() {
     telegram-send "EXAMPLES CREATED"
 }
 
-create_train() {
-    CATBOOST_ALL=${DATA_DIR}/catboost.all
-#    python -m calculate_features_main $EXAMPLES $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $VECTOR_FILE $UI_VECTOR_FILE $POPULARITY_TRACK $POPULARITY_ALBUM $POPULARITY_ARTIST $CATBOOST_ALL 30
-#    python -m calculate_features_main ${EXAMPLES}2 $TRACK_TO_ALBUM $ALBUM_TO_ARTIST $VECTOR_FILE $UI_VECTOR_FILE $POPULARITY_TRACK $POPULARITY_ALBUM $POPULARITY_ARTIST ${CATBOOST_ALL}2 40
-    echo python -m utils.split_train_test $CATBOOST_ALL $CATBOOST_EXAMPLES $CATBOOST_TEST 0.95
-    exit
-#    python -m utils.split_train_test ${CATBOOST_ALL}2 ${CATBOOST_EXAMPLES}2 ${CATBOOST_TEST}2 0.95 &
-    telegram-send "TRAIN READY"
-    wait
-#    exit
-}
-
 fit_catboost() {
     CD_FILE=${DATA_DIR}/cd
     echo -e "0\tTarget" > $CD_FILE

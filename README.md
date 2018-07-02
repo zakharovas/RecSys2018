@@ -52,7 +52,7 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 
 1) Train Catboost
     ```bash
-    bash cb.sh 
+    bash cb.sh ~/catboost
     ```
 
 1) Create candidates for challenge set
@@ -82,9 +82,9 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
 
 ### Usage recommendations
 
-* With recsys_script.sh you may set path to catboost binary with --catboost_path option.
-To Starspace binary with --starspace_path option. To your python virtualenv with --env option.
+* With recsys_script.sh you may set path to Starspace binary with --starspace_path option. To your python virtualenv with --env option.
 
+* Path to catboost binary you may set as argument to *cb.sh*.
 
 * You will need about 100GB RAM
 
