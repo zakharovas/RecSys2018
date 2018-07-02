@@ -22,7 +22,7 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     ```bash
     bash recsys_script.sh --encoding 
     ```
-1) Train iAls and Starspace
+1) Train iALS and Starspace
     ```bash
     bash recsys_script.sh --update_models 
     ```
@@ -46,7 +46,7 @@ You will also need [Catboost](https://catboost.yandex/), [Starspace](https://git
     bash create_examples.sh
     ```
 
-1) Create pools for catboost from examples
+1) Create pools for Catboost from examples
     
     ```bash
     bash test_to_vw.sh
